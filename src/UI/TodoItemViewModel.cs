@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 using Assignment.Application.TodoItems.Commands.CreateTodoItem;
 using Assignment.Application.TodoLists.Queries.GetTodos;
 using Assignment.Domain.Enums;
@@ -48,6 +49,12 @@ public class TodoItemViewModel : Screen
 
     private async void SaveExecute(object parameter)
     {
+        if (await CheckIfTitleExist())
+        {
+            MessageBox.Show("Title already exist");
+            return;
+        }
+
         await _sender.Send(new CreateTodoItemCommand
         {
             ListId = CurrentItem.ListId,
@@ -56,6 +63,11 @@ public class TodoItemViewModel : Screen
             Priority = CurrentItem.Priority
         });
         await TryCloseAsync(true);
+    }
+
+    private async Task<bool> CheckIfTitleExist()
+    {
+        return await _sender.Send(new CheckTodoTitleQuery { Title = CurrentItem.Title });
     }
 
     private async void CloseExecute(object parameter)

@@ -1,5 +1,8 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Windows;
+using System.Windows.Input;
 using Assignment.Application.TodoLists.Commands.CreateTodoList;
+using Assignment.Application.TodoLists.Queries.GetTodos;
 using Caliburn.Micro;
 using MediatR;
 
@@ -9,6 +12,8 @@ public class TodoListViewModel : Screen
     private readonly ISender _sender;
 
     private string _title;
+
+    [MaxLength(200)]
     public string Title
     {
         get => _title;
@@ -32,8 +37,20 @@ public class TodoListViewModel : Screen
 
     private async void SaveExecute(object parameter)
     {
+
+        if (await CheckIfTitleExist())
+        {
+            MessageBox.Show("Title already exist");
+            return;
+        }
+
         await _sender.Send(new CreateTodoListCommand(Title));
         await TryCloseAsync(true);
+    }
+
+    private async Task<bool> CheckIfTitleExist()
+    {
+        return await _sender.Send(new CheckTodoTitleQuery { Title = this.Title });
     }
 
     private async void CloseExecute(object parameter)

@@ -3,12 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Assignment.UI"
         mc:Ignorable="d"
         Height="150" Width="800">
     <StackPanel Margin="10">
         <Label Content="Title:"/>
-        <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <TextBox>
+            <TextBox.Text>
+                <Binding Path="Title"
+                         UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <local:MaxLengthRule MaxLength="200" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError"
+                                 Value="true">
+                            <Setter Property="ToolTip"
+                                    Value="{Binding RelativeSource={RelativeSource Self}, 
+                                        Path=(Validation.Errors)[0].ErrorContent}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+        
         <Button Content="Save" Command="{Binding SaveCommand}"/>
         <Button Content="Cancel" Command="{Binding CloseCommand}"/>
     </StackPanel>

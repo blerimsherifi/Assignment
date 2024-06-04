@@ -1,4 +1,5 @@
-﻿using Assignment.Domain.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using Assignment.Domain.Enums;
 
 namespace Assignment.Application.TodoLists.Queries.GetTodos;
 
@@ -8,6 +9,7 @@ public class TodoItemDto
 
     public int ListId { get; init; }
 
+    [MaxLength(200)]
     public string? Title { get; init; }
 
     public bool Done { get; init; }
