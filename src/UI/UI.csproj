@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" />
+    <PackageReference Include="MaterialDesignThemes" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="System.Data.SQLite" />
   </ItemGroup>

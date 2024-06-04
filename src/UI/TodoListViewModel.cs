@@ -4,12 +4,14 @@ using System.Windows.Input;
 using Assignment.Application.TodoLists.Commands.CreateTodoList;
 using Assignment.Application.TodoLists.Queries.GetTodos;
 using Caliburn.Micro;
+using MaterialDesignThemes.Wpf;
 using MediatR;
 
 namespace Assignment.UI;
 public class TodoListViewModel : Screen
 {
     private readonly ISender _sender;
+    private readonly ISnackbarMessageQueue _snackbarMessageQueue;
 
     private string _title;
 
@@ -24,6 +26,11 @@ public class TodoListViewModel : Screen
         }
     }
 
+    public ISnackbarMessageQueue SnackbarMessageQueue
+    {
+        get => _snackbarMessageQueue;
+    }
+
     public ICommand SaveCommand { get; }
     public ICommand CloseCommand { get; }
 
@@ -33,6 +40,7 @@ public class TodoListViewModel : Screen
 
         SaveCommand = new RelayCommand(SaveExecute);
         CloseCommand = new RelayCommand(CloseExecute);
+        _snackbarMessageQueue = new SnackbarMessageQueue();
     }
 
     private async void SaveExecute(object parameter)
@@ -40,7 +48,8 @@ public class TodoListViewModel : Screen
 
         if (await CheckIfTitleExist())
         {
-            MessageBox.Show("Title already exist");
+            //MessageBox.Show("Title already exist");
+            _snackbarMessageQueue.Enqueue("Title already exist");
             return;
         }
 
