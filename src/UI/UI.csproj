@@ -43,4 +43,16 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="Assignment.Application.DTOs">
+      <Alias>assignmentDTOs</Alias>
+    </Using>
+    <Using Include="Assignment.Application.TodoItems.Commands">
+      <Alias>assignmentCommands</Alias>
+    </Using>
+    <Using Include="Assignment.Application.TodoLists.Queries">
+      <Alias>assignmentQueries</Alias>
+    </Using>
+  </ItemGroup>
+
 </Project>

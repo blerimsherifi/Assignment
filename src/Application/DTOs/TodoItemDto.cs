@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Assignment.Domain.Enums;
 
-namespace Assignment.Application.TodoLists.Queries.GetTodos;
+namespace Assignment.Application.DTOs;
 
 public class TodoItemDto
 {

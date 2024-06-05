@@ -13,8 +13,8 @@ public class TodoItemViewModel : Screen
 {
     private readonly ISender _sender;
 
-    private TodoItemDto _currentItem;
-    public TodoItemDto CurrentItem
+    private assignmentDTOs.TodoItemDto _currentItem;
+    public assignmentDTOs.TodoItemDto CurrentItem
     {
         get => _currentItem;
         set
@@ -33,7 +33,7 @@ public class TodoItemViewModel : Screen
     {
         _sender = sender;
 
-        CurrentItem = new TodoItemDto() { ListId = listId };
+        CurrentItem = new assignmentDTOs.TodoItemDto() { ListId = listId };
         SaveCommand = new RelayCommand(SaveExecute);
         CloseCommand = new RelayCommand(CloseExecute);
 

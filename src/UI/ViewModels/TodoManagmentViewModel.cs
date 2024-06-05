@@ -1,7 +1,5 @@
 ﻿using System.Windows.Input;
 using Assignment.Application.Common.Cashing;
-using Assignment.Application.TodoItems.Commands.DoneTodoItem;
-using Assignment.Application.TodoLists.Queries.GetTodos;
 using Assignment.Domain.Enums;
 using Caliburn.Micro;
 using MediatR;
@@ -11,10 +9,10 @@ internal class TodoManagmentViewModel : Screen
 {
     private readonly ISender _sender;
     private readonly IWindowManager _windowManager;
-    private readonly SimpleCache<int, IList<TodoListDto>> _cache;
+    private readonly SimpleCache<int, IList<assignmentDTOs.TodoListDto>> _cache;
 
-    private IList<TodoListDto> todoLists;
-    public IList<TodoListDto> TodoLists
+    private IList<assignmentDTOs.TodoListDto> todoLists;
+    public IList<assignmentDTOs.TodoListDto> TodoLists
     {
         get
         {
@@ -27,8 +25,8 @@ internal class TodoManagmentViewModel : Screen
         }
     }
 
-    private TodoListDto _selectedTodoList;
-    public TodoListDto SelectedTodoList
+    private assignmentDTOs.TodoListDto _selectedTodoList;
+    public assignmentDTOs.TodoListDto SelectedTodoList
     {
         get => _selectedTodoList;
         set
@@ -38,8 +36,8 @@ internal class TodoManagmentViewModel : Screen
         }
     }
 
-    private TodoItemDto _selectedItem;
-    public TodoItemDto SelectedItem
+    private assignmentDTOs.TodoItemDto _selectedItem;
+    public assignmentDTOs.TodoItemDto SelectedItem
     {
         get => _selectedItem;
         set
@@ -57,7 +55,7 @@ internal class TodoManagmentViewModel : Screen
     {
         _sender = sender;
         _windowManager = windowManager;
-        _cache = SimpleCache<int, IList<TodoListDto>>.Instance;
+        _cache = SimpleCache<int, IList<assignmentDTOs.TodoListDto>>.Instance;
         Initialize();
     }
 
@@ -84,7 +82,7 @@ internal class TodoManagmentViewModel : Screen
         else
         {
             // Value not found in the cache, fetch it from the sender
-            TodoLists = await _sender.Send(new GetTodosQuery());
+            TodoLists = await _sender.Send(new assignmentQueries.GetTodos.GetTodosQuery());
 
             // Store the fetched value in the cache
             _cache.Set((int)CachedKeys.TodoLists, TodoLists);
@@ -119,7 +117,7 @@ internal class TodoManagmentViewModel : Screen
     {
         if (CanItemBeMarkedAsDone())
         {
-            await _sender.Send(new DoneTodoItemCommand(SelectedItem.Id));
+            await _sender.Send(new assignmentCommands.DoneTodoItem.DoneTodoItemCommand(SelectedItem.Id));
             await RefereshTodoLists(getFromSource: true);
         }
     }
