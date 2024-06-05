@@ -2,7 +2,6 @@ using Assignment.Application.Common.Interfaces;
 using Assignment.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Assignment.Infrastructure.Identity;
 

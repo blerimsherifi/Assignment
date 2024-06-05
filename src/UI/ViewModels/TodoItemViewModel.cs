@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using Assignment.Application.TodoItems.Commands.CreateTodoItem;
+using Assignment.Application.TodoLists.Queries.CheckTodoItemTitle;
 using Assignment.Application.TodoLists.Queries.GetTodos;
 using Assignment.Domain.Enums;
 using Caliburn.Micro;

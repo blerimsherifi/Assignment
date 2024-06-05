@@ -1,4 +1,4 @@
-﻿namespace Assignment.Application.Common.Cashing;
+﻿namespace Assignment.Domain.Enums;
 
 public enum CachedKeys
 {

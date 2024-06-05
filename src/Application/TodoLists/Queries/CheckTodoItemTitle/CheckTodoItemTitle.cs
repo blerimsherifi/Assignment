@@ -1,7 +1,7 @@
 ﻿using Assignment.Application.Common.Interfaces;
 using Assignment.Application.Common.Security;
 
-namespace Assignment.Application.TodoLists.Queries.GetTodos;
+namespace Assignment.Application.TodoLists.Queries.CheckTodoItemTitle;
 
 [Authorize]
 public record CheckTodoItemTitleQuery : IRequest<bool> { public string Title { get; set; } = string.Empty; }

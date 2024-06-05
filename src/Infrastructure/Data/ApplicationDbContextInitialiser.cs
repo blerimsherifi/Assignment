@@ -81,7 +81,7 @@ public class ApplicationDbContextInitialiser
             await _userManager.CreateAsync(administrator, "Administrator1!");
             if (!string.IsNullOrWhiteSpace(administratorRole.Name))
             {
-                await _userManager.AddToRolesAsync(administrator, new [] { administratorRole.Name });
+                await _userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
             }
         }
 
@@ -100,6 +100,43 @@ public class ApplicationDbContextInitialiser
                     new TodoItem { Title = "Reward yourself with a nice, long nap 🏆" },
                 }
             });
+
+            await _context.SaveChangesAsync();
+        }
+
+        // Default data for countries and citiess
+        // Seed, if necessary
+        if (!_context.Countries.Any())
+        {
+            _context.Countries.AddRange(
+                new Country
+                {
+                    CountryName = "USA",
+                    Cities = new List<City>
+                    {
+                        new City { CityName = "New York" },
+                        new City { CityName = "Los Angeles" }
+                    }
+                },
+                new Country
+                {
+                    CountryName = "Canada",
+                    Cities = new List<City>
+                    {
+                        new City { CityName = "Toronto" },
+                        new City { CityName = "Vancouver" }
+                    }
+                },
+                new Country
+                {
+                    CountryName = "Mexico",
+                    Cities = new List<City>
+                    {
+                        new City { CityName = "Mexico City" },
+                        new City { CityName = "Guadalajara" }
+                    }
+                }
+            );
 
             await _context.SaveChangesAsync();
         }

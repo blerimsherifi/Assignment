@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Windows;
 using System.Windows.Input;
 using Assignment.Application.TodoLists.Commands.CreateTodoList;
-using Assignment.Application.TodoLists.Queries.GetTodos;
+using Assignment.Application.TodoLists.Queries.CheckTodoTitle;
 using Caliburn.Micro;
 using MaterialDesignThemes.Wpf;
 using MediatR;
@@ -59,7 +58,7 @@ public class TodoListViewModel : Screen
 
     private async Task<bool> CheckIfTitleExist()
     {
-        return await _sender.Send(new CheckTodoTitleQuery { Title = this.Title });
+        return await _sender.Send(new CheckTodoTitleQuery { Title = Title });
     }
 
     private async void CloseExecute(object parameter)

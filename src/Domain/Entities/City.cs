@@ -2,7 +2,6 @@
 
 public class City : BaseAuditableEntity
 {
-    public int CityID { get; set; }
     public required string CityName { get; set; }
 
     // Foreign key

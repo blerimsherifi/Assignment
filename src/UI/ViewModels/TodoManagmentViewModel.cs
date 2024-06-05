@@ -2,6 +2,7 @@
 using Assignment.Application.Common.Cashing;
 using Assignment.Application.TodoItems.Commands.DoneTodoItem;
 using Assignment.Application.TodoLists.Queries.GetTodos;
+using Assignment.Domain.Enums;
 using Caliburn.Micro;
 using MediatR;
 
@@ -119,7 +120,7 @@ internal class TodoManagmentViewModel : Screen
         if (CanItemBeMarkedAsDone())
         {
             await _sender.Send(new DoneTodoItemCommand(SelectedItem.Id));
-            await RefereshTodoLists();
+            await RefereshTodoLists(getFromSource: true);
         }
     }
 
