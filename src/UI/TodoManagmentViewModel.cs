@@ -1,8 +1,8 @@
 ﻿using System.Windows.Input;
+using Assignment.Application.Common.Cashing;
 using Assignment.Application.TodoItems.Commands.DoneTodoItem;
 using Assignment.Application.TodoLists.Queries.GetTodos;
 using Caliburn.Micro;
-using MaterialDesignThemes.Wpf;
 using MediatR;
 
 namespace Assignment.UI;
@@ -10,6 +10,7 @@ internal class TodoManagmentViewModel : Screen
 {
     private readonly ISender _sender;
     private readonly IWindowManager _windowManager;
+    private readonly SimpleCache<int, IList<TodoListDto>> _cache;
 
     private IList<TodoListDto> todoLists;
     public IList<TodoListDto> TodoLists
@@ -55,6 +56,7 @@ internal class TodoManagmentViewModel : Screen
     {
         _sender = sender;
         _windowManager = windowManager;
+        _cache = SimpleCache<int, IList<TodoListDto>>.Instance;
         Initialize();
     }
 
@@ -67,11 +69,25 @@ internal class TodoManagmentViewModel : Screen
         DoneTodoItemCommand = new RelayCommand(DoneTodoItem);
     }
 
-    private async Task RefereshTodoLists()
+    private async Task RefereshTodoLists(bool getFromSource = false)
     {
         var selectedListId = SelectedTodoList?.Id;
 
-        TodoLists = await _sender.Send(new GetTodosQuery());
+        // Check if the value is present in the cache
+        var cachedValue = _cache.Get((int)CachedKeys.TodoLists);
+
+        if (cachedValue != null && !getFromSource)
+        {
+            TodoLists = cachedValue;
+        }
+        else
+        {
+            // Value not found in the cache, fetch it from the sender
+            TodoLists = await _sender.Send(new GetTodosQuery());
+
+            // Store the fetched value in the cache
+            _cache.Set((int)CachedKeys.TodoLists, TodoLists);
+        }
 
         if (selectedListId.HasValue && selectedListId.Value > 0)
         {
@@ -83,7 +99,7 @@ internal class TodoManagmentViewModel : Screen
     {
         var todoList = new TodoListViewModel(_sender);
         await _windowManager.ShowDialogAsync(todoList);
-        await RefereshTodoLists();
+        await RefereshTodoLists(getFromSource: true);
     }
 
     private async void AddTodoItem(object obj)
@@ -95,7 +111,7 @@ internal class TodoManagmentViewModel : Screen
 
         var todoItem = new TodoItemViewModel(_sender, SelectedTodoList.Id);
         await _windowManager.ShowDialogAsync(todoItem);
-        await RefereshTodoLists();
+        await RefereshTodoLists(getFromSource: true);
     }
 
     private async void DoneTodoItem(object obj)

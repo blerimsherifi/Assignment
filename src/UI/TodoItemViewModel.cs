@@ -67,7 +67,7 @@ public class TodoItemViewModel : Screen
 
     private async Task<bool> CheckIfTitleExist()
     {
-        return await _sender.Send(new CheckTodoTitleQuery { Title = CurrentItem.Title });
+        return await _sender.Send(new CheckTodoItemTitleQuery { Title = CurrentItem.Title });
     }
 
     private async void CloseExecute(object parameter)
