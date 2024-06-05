@@ -72,7 +72,7 @@ public class WeatherForecastViewModel : Screen
 
     private async void LoadCountriesAsync()
     {
-           Countries = await _sender.Send(new GetCountriesQuery());
+        Countries = await _sender.Send(new GetCountriesQuery());
     }
 
     private async void LoadCitiesAsync()
